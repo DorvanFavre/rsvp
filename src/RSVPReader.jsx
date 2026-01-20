@@ -3,6 +3,10 @@ import { useEffect, useRef, useState } from "react";
    Pivot logic
    ====================== */
 
+function isSentenceEnd(word) {
+  return /[.!?]$/.test(word);
+}
+
 function getPivotIndex(word) {
   if (!word || word.length <= 1) return 0;
   if (word.length <= 5) return 1;
@@ -49,24 +53,30 @@ export default function RSVPReader({
 
   const [running, setRunning] = useState(false);
   const [wpm, setWpm] = useState(300);
-
-  const timerRef = useRef(null);
+  const [sentencePause, setSentencePause] = useState(5);
+ 
   const intervalMs = 60000 / wpm;
 
   useEffect(() => {
-    if (!running) {
-      clearInterval(timerRef.current);
-      return;
-    }
+      if (!running) return;
 
-    timerRef.current = setInterval(() => {
-      setIndex((i) =>
-        i < words.length - 1 ? i + 1 : i
-      );
-    }, intervalMs);
+      const currentWord = words[index];
+      const pauseMultiplier = isSentenceEnd(currentWord)
+        ? sentencePause
+        : 1;
 
-    return () => clearInterval(timerRef.current);
-  }, [running, intervalMs, words.length, setIndex]);
+      const delay = intervalMs * pauseMultiplier;
+
+      const timeoutId = setTimeout(() => {
+        setIndex((i) =>
+          i < words.length - 1 ? i + 1 : i
+        );
+      }, delay);
+
+      return () => clearTimeout(timeoutId);
+    }, [running, index, intervalMs, sentencePause, words]);
+  
+
 
   return (
     <div style={styles.container}>
@@ -115,7 +125,7 @@ export default function RSVPReader({
 
       {/* Controls */}
       <div style={styles.controls}>
-        <div style={styles.buttonsRow}>
+        {/* <div style={styles.buttonsRow}>
           <button
             style={{
               ...styles.button,
@@ -126,13 +136,7 @@ export default function RSVPReader({
             {running ? "Pause" : "Start"}
           </button>
 
-          <button
-            style={styles.button}
-            onClick={() => setIndex(0)}
-          >
-            Reset
-          </button>
-        </div>
+        </div> */}
 
         <div style={styles.sliderRow}>
           <div style={styles.sliderLabel}>
@@ -140,13 +144,29 @@ export default function RSVPReader({
           </div>
           <input
             type="range"
-            min="100"
-            max="1000"
+            min="500"
+            max="1500"
             step="50"
             value={wpm}
             onChange={(e) =>
               setWpm(Number(e.target.value))
             }
+            style={styles.slider}
+          />
+        </div>
+
+        <div style={styles.sliderRow}>
+          <div style={styles.sliderLabel}>
+            Sentence pause: {sentencePause}×
+          </div>
+
+          <input
+            type="range"
+            min="1"
+            max="10"
+            step="1"
+            value={sentencePause}
+            onChange={(e) => setSentencePause(Number(e.target.value))}
             style={styles.slider}
           />
         </div>
@@ -239,8 +259,8 @@ const styles = {
 
   headerButtonPrimary: {
     flex: 1,
-    padding: "0.7rem 1rem",
-    fontSize: "0.95rem",
+    padding: "0.4rem 1rem",
+    fontSize: "0.75rem",
     borderRadius: "12px",
     border: "none",
     backgroundColor: "#4b4f56",
@@ -250,8 +270,8 @@ const styles = {
 
   headerButton: {
     flex: 1,
-    padding: "0.7rem 1rem",
-    fontSize: "0.95rem",
+    padding: "0.4rem 1rem",
+    fontSize: "0.75rem",
     borderRadius: "12px",
     border: "none",
     backgroundColor: "#1f2937",
