@@ -15,12 +15,18 @@ export default function App() {
   const [text, setText] = useState(
     "Upload a PDF or EPUB to start reading."
   );
+  const [index, setIndex] = useState(0);
+
   useEffect(() => {
-    const savedText = localStorage.getItem("rsvp-text");
-    const savedIndex = localStorage.getItem("rsvp-index");
+    try {
+      const savedText = localStorage.getItem("rsvp-text");
+      const savedIndex = localStorage.getItem("rsvp-index");
 
     if (savedText) setText(savedText);
     if (savedIndex) setIndex(Number(savedIndex));
+    } catch (err) {
+      console.warn("Failed to restore saved state", err);
+    }
   }, []);
 
   useEffect(() => {
@@ -38,7 +44,7 @@ export default function App() {
 
   const words = text.trim().split(/\s+/);
 
-  const [index, setIndex] = useState(0);
+
 
 
   /* ======================
