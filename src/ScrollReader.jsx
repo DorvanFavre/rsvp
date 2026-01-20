@@ -128,12 +128,15 @@ export default function ScrollReader({
 >
   <input
     type="number"
+    inputMode="numeric"
+    pattern="[0-9]*"
     min="0"
     max="100"
     placeholder="%"
     value={jumpPercent}
     onChange={(e) => setJumpPercent(e.target.value)}
     style={{
+      fontSize: "16px", 
       width: "4.5rem",
       padding: "0.4rem",
       borderRadius: "6px",
@@ -177,6 +180,7 @@ export default function ScrollReader({
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
     style={{
+      fontSize: "16px", 
       flex: 1,
       minWidth: "10rem",
       padding: "0.4rem",
