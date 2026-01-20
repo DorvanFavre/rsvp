@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
 import RSVPReader from "./RSVPReader";
 import ScrollReader from "./ScrollReader";
 import * as pdfjsLib from "pdfjs-dist";
@@ -16,6 +15,7 @@ export default function App() {
     "Upload a PDF or EPUB to start reading."
   );
   const [index, setIndex] = useState(0);
+  const [view, setView] = useState("rsvp"); // "rsvp" | "scroll"
 
   useEffect(() => {
     try {
@@ -132,29 +132,25 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route
-        path="/reader"
-        element={
-          <RSVPReader
-            words={words}
-            index={index}
-            setIndex={setIndex}
-            handleFileUpload={handleFileUpload} // 👈 HERE
-          />
-        }
-      />
-      <Route
-        path="/text"
-        element={
-          <ScrollReader
-            words={words}
-            index={index}
-            setIndex={setIndex}
-          />
-        }
-      />
-      <Route path="*" element={<Navigate to="/reader" />} />
-    </Routes>
+    <>
+      {view === "rsvp" && (
+        <RSVPReader
+          words={words}
+          index={index}
+          setIndex={setIndex}
+          handleFileUpload={handleFileUpload}
+          goToScroll={() => setView("scroll")}
+        />
+      )}
+
+      {view === "scroll" && (
+        <ScrollReader
+          words={words}
+          index={index}
+          setIndex={setIndex}
+          goToRSVP={() => setView("rsvp")}
+        />
+      )}
+    </>
   );
 }

@@ -1,7 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import JSZip from "jszip";
-
 /* ======================
    Pivot logic
    ====================== */
@@ -47,8 +44,8 @@ export default function RSVPReader({
   index,
   setIndex,
   handleFileUpload,
+  goToScroll
 }) {
-  const navigate = useNavigate();
 
   const [running, setRunning] = useState(false);
   const [wpm, setWpm] = useState(300);
@@ -97,7 +94,7 @@ export default function RSVPReader({
 
           <button
             style={styles.headerButton}
-            onClick={() => navigate("/text")}
+            onClick={goToScroll}
           >
             Text view
           </button>
@@ -178,11 +175,6 @@ const styles = {
     //touchAction: "none",
   },
 
-  header: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-  },
 
   wordContainer: {
     flex: 1,

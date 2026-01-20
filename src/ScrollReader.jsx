@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function ScrollReader({ words, index, setIndex }) {
-  const navigate = useNavigate();
+export default function ScrollReader({
+   words, index, setIndex, goToRSVP
+  }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function ScrollReader({ words, index, setIndex }) {
       }}
     >
       <button
-        onClick={() => navigate("/reader")}
+        onClick={goToRSVP}
         style={{
           position: "sticky",
           top: 0,
