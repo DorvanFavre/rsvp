@@ -16,7 +16,7 @@ export default defineConfig({
         theme_color: "#0f1115",
         background_color: "#0f1115",
         display: "standalone",
-        start_url: "/reader", 
+        start_url: "/#/reader", 
         icons: [
           {
             src: "/icon-192.png",
