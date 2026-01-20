@@ -153,8 +153,8 @@ export default function RSVPReader({
           </div>
           <input
             type="range"
-            min="500"
-            max="1500"
+            min="300"
+            max="1300"
             step="50"
             value={wpm}
             onChange={(e) =>
