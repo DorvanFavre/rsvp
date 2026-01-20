@@ -16,13 +16,16 @@ export default function ScrollReader({
     <div
       ref={containerRef}
       style={{
-        height: "100vh",
-        overflowY: "scroll",
-        padding: "1.5rem",
-        fontSize: "1.1rem",
-        lineHeight: "1.6",
-        background: "#0f1115",
-        color: "#fff",
+           position: "relative",
+          height: "100dvh",          // ✅ mobile-safe viewport
+          overflowY: "auto",         // ✅ allow scroll
+          WebkitOverflowScrolling: "touch",
+          padding: "1.5rem",
+          fontSize: "1.1rem",
+          lineHeight: "1.6",
+          background: "#0f1115",
+          color: "#fff",
+          touchAction: "pan-y", 
       }}
     >
       <button

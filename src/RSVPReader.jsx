@@ -172,7 +172,7 @@ const styles = {
     padding: "1.5rem",
     boxSizing: "border-box",
     overflow: "hidden",    // 🔒 no internal scrolling
-    //touchAction: "none",
+    touchAction: "none",
   },
 
 
