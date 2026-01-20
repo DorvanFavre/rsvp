@@ -206,7 +206,7 @@ const styles = {
   },
 
   buttonPrimary: {
-    backgroundColor: "#3b82f6",
+    backgroundColor: "#4b4f56",
   },
 
   sliderRow: {
@@ -243,7 +243,7 @@ const styles = {
     fontSize: "0.95rem",
     borderRadius: "12px",
     border: "none",
-    backgroundColor: "#3b82f6",
+    backgroundColor: "#4b4f56",
     color: "white",
     cursor: "pointer",
   },
@@ -271,7 +271,8 @@ const pivotStyles = {
     display: "flex",
     justifyContent: "center",
     width: "25ch",
-    fontFamily: "monospace",
+    fontFamily:
+      '"SF Mono", "Roboto Mono", "JetBrains Mono", "IBM Plex Mono", "Source Code Pro", monospace',
     fontSize: "clamp(3rem, 8vw, 5rem)",
     fontWeight: 600,
   },
