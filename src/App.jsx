@@ -26,8 +26,13 @@ export default function App() {
   useEffect(() => {
     // Save only if there is meaningful text
     if (text && text.trim().length > 0) {
-      localStorage.setItem("rsvp-text", text);
-      localStorage.setItem("rsvp-index", String(index));
+
+      try {
+        localStorage.setItem("rsvp-text", text);
+        localStorage.setItem("rsvp-index", String(index));
+      } catch (err) {
+        console.warn("LocalStorage full, cannot persist text", err);
+      }
     }
   }, [text, index]);
 
