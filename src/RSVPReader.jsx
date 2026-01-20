@@ -55,27 +55,51 @@ export default function RSVPReader({
   const [wpm, setWpm] = useState(300);
   const [sentencePause, setSentencePause] = useState(5);
   const [showControls, setShowControls] = useState(true);
+  const [displayWord, setDisplayWord] = useState(words[index] || null);
  
   const intervalMs = 60000 / wpm;
+
+  useEffect(() => {
+  if (!running) {
+    setDisplayWord(words[index] || null);
+  }
+}, [index, running, words]);
 
   useEffect(() => {
       if (!running) return;
 
       const currentWord = words[index];
-      const pauseMultiplier = isSentenceEnd(currentWord)
+      if (!currentWord) return;
+
+      setDisplayWord(currentWord);
+
+      const isEnd = isSentenceEnd(currentWord);
+      const pauseMultiplier = isEnd
         ? sentencePause
         : 1;
 
       const delay = intervalMs * pauseMultiplier;
 
-      const timeoutId = setTimeout(() => {
+      let clearTimeoutId;
+      if (isEnd) {
+        clearTimeoutId = setTimeout(() => {
+          setDisplayWord(null);
+        }, intervalMs * 0.6); // 👈 blank during the pause
+      }
+
+      const advanceTimeoutId = setTimeout(() => {
         setIndex((i) =>
           i < words.length - 1 ? i + 1 : i
         );
       }, delay);
 
-      return () => clearTimeout(timeoutId);
+      return () => {
+        clearTimeout(advanceTimeoutId);
+        if (clearTimeoutId) clearTimeout(clearTimeoutId);
+      };
     }, [running, index, intervalMs, sentencePause, words]);
+
+
   
 
 
@@ -128,7 +152,7 @@ export default function RSVPReader({
       style={styles.wordContainer}
       onClick={() => setRunning((r) => !r)}
     >
-      <PivotWord word={words[index]} />
+      <PivotWord word={displayWord} />
     </div>
 
       {/* Controls */}
