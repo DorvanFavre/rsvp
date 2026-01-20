@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import RSVPReader from "./RSVPReader";
 import ScrollReader from "./ScrollReader";
 import * as pdfjsLib from "pdfjs-dist";
 import JSZip from "jszip";
+
+
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.worker.min.js";
@@ -13,6 +15,22 @@ export default function App() {
   const [text, setText] = useState(
     "Upload a PDF or EPUB to start reading."
   );
+  useEffect(() => {
+    const savedText = localStorage.getItem("rsvp-text");
+    const savedIndex = localStorage.getItem("rsvp-index");
+
+    if (savedText) setText(savedText);
+    if (savedIndex) setIndex(Number(savedIndex));
+  }, []);
+
+  useEffect(() => {
+    // Save only if there is meaningful text
+    if (text && text.trim().length > 0) {
+      localStorage.setItem("rsvp-text", text);
+      localStorage.setItem("rsvp-index", String(index));
+    }
+  }, [text, index]);
+
   const words = text.trim().split(/\s+/);
 
   const [index, setIndex] = useState(0);
