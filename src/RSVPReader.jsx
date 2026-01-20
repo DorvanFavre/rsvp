@@ -54,6 +54,7 @@ export default function RSVPReader({
   const [running, setRunning] = useState(false);
   const [wpm, setWpm] = useState(300);
   const [sentencePause, setSentencePause] = useState(5);
+  const [showControls, setShowControls] = useState(true);
  
   const intervalMs = 60000 / wpm;
 
@@ -108,6 +109,13 @@ export default function RSVPReader({
           >
             Text view
           </button>
+
+          <button
+          style={styles.headerButton}
+          onClick={() => setShowControls((v) => !v)}
+        >
+          {showControls ? "Hide controls" : "Show controls"}
+        </button>
         </div>
 
         <div style={styles.headerStatus}>
@@ -124,6 +132,7 @@ export default function RSVPReader({
     </div>
 
       {/* Controls */}
+      {showControls && (
       <div style={styles.controls}>
         {/* <div style={styles.buttonsRow}>
           <button
@@ -170,7 +179,9 @@ export default function RSVPReader({
             style={styles.slider}
           />
         </div>
+      
       </div>
+      )}
     </div>
   );
 }
